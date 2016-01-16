@@ -1,3 +1,6 @@
+'''DEPRECATED'''
+
+
 from entities import Team, Player
 from util.custom_errors import RegistrationError
 from google.appengine.ext import ndb
