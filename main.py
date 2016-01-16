@@ -1,7 +1,7 @@
 from flask import Flask, request
 from twilio.rest import TwilioRestClient
 from model.message import Message, ResponseBuilder
-from model.action import ActionBuilder, Action
+from model.actions import ActionBuilder, Action
 
 app = Flask(__name__)
 

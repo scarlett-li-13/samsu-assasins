@@ -3,6 +3,31 @@ from player import Player
 from datetime import datetime
 
 
+class Action(ndb.Model):
+    '''
+    Action object
+    Key: default assigned by NDB
+    Fields:
+        attacker - phone number
+        action - string
+        victim - phone number
+        datetime
+        place
+        validation
+    '''
+    attacker = ndb.StringProperty(required=True)
+    action = ndb.StringProperty(required=True,
+                                choices=set(["KILL",
+                                             "DISARM",
+                                             "INVUL",
+                                             "SNIPE",
+                                             "BOMB"]))
+    victim = ndb.StringProperty(default="")
+    datetime = ndb.DateTimeProperty(required=True)
+    place = ndb.StringProperty(default="")
+    need_validation = ndb.BooleanProperty(default=True)
+
+
 class ActionBuilder(object):
     '''Action builder which takes a message object and returns ActionObject.'''
     action = Action()
@@ -61,29 +86,3 @@ class ActionBuilder(object):
             raise ActionError("THEM", self.victim.state)
 
         return False
-
-
-class Action(ndb.Model):
-    '''
-    Action object
-    Key: default assigned by NDB
-    Fields:
-        attacker - phone number
-        action - string
-        victim - phone number
-        datetime
-        place
-        validation
-    '''
-    attacker = ndb.StringProperty(required=True)
-    action = ndb.StringProperty(require=True,
-                                choices=set(["KILL",
-                                             "DISARM",
-                                             "INVUL",
-                                             "SNIPE",
-                                             "BOMB"]))
-    victim = ndb.StringProperty(default="")
-    datetime = ndb.DateTimeProperty(required=True)
-    place = ndb.StringProperty(default="")
-    need_validation = ndb.BooleanProperty(default=True)
-
