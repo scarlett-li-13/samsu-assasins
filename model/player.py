@@ -6,7 +6,7 @@ class Player(ndb.Model):
     Key: phone number
     Has:
         state - ALIVE, DEAD, INVUL, DISARM
-        role - DEMO, SNIPER,
+        role - DEMO, SNIPER, MEDIC
         realname
         codename
         killed - list of people killed []

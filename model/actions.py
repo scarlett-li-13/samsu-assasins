@@ -2,6 +2,7 @@ from google.appengine.ext import ndb
 from player import Player
 from datetime import datetime
 from error import ActionError
+import logging
 
 
 class Action(ndb.Model):
@@ -34,10 +35,12 @@ class ActionBuilder(object):
     action = Action()
 
     def __init__(self, message):
+        logging.debug("Action Builder Message: %s, %s, %s".format(message.From, message.To, message.Body))
         self.message = message
 
     def make_action(self):
         action, params = self._get_command()
+        log.debug("Action Builder Action: %s, %s, %s".format(action.attacker, action.action, action.victim))
         self._get_attacker()
 
         if action == "KILL":
@@ -56,6 +59,7 @@ class ActionBuilder(object):
 
     def _get_attacker(self):
         self.attacker = Player.get_by_id(self.message.From)
+        log.debug("Action Builder Attacker: %s)".format(self.attacker.realname))
 
     def _get_victim(self, victim_name):
         potential_victims = Player.query(Player.codename == victim_name).fetch()
@@ -63,10 +67,11 @@ class ActionBuilder(object):
             if i > 0:
                 raise ActionError("NAME", victim_name)
             self.victim = victim
+            log.debug("Action Builder Attacker: %s)".format(self.victim.realname))
         raise ActionError("NAME", victim_name)
 
     def _kill(self, params):
-        vitim = params[0]
+        victim = params[0]
         self._get_victim(victim)
         if self._validate_kill():
             ''' Invalid kill '''
