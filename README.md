@@ -1,24 +1,21 @@
 # Samsu Assasins
 
+By: George Teo [other contributors put your name here]
+
 Built for UChicago SAMSU assasins 2016. 
 This project is licensed under the terms of the MIT license.
 
-- Backend: GO REST API 
-- Mobile: React Native
+- Backend: Flask Rest Api	
+- Mobile: Twilio
 
 ## Dev notes
 
-Built with Google App Engine Go SDK.
+Built with Google App Engine Python SDK.
 
 ```
 // Dev server
-goapp serve
+dev_appserver.py .
 
 // To upload a new version to app engine:
-appcfg.py -A samsu-assasins update .
+appcfg.py update .
 ```
-
-## Dev TODO
-
-1. Build out GO RESTAPI
-2. Build out react native frontend
