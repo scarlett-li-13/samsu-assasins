@@ -1,7 +1,8 @@
 from flask import Flask, request
 from twilio.rest import TwilioRestClient
 from model.message import Message, ResponseBuilder
-from model.actions import ActionBuilder, Action
+from model.actions import ActionBuilder
+from model.error import ActionError
 
 app = Flask(__name__)
 
@@ -31,12 +32,15 @@ def index():
         except ActionError as message:
             response_num_list = [action.attacker]
             response = "[ERR] {}".format(message)
+        except:
+            response_num_list = [action.attacker]
+            response = "[ERR] Unknown Error"
 
-        for response in response_num_list:
+        for response_number in response_num_list:
             '''Make message'''
             outgoing_message = Message(From=SERVER_NUMBER,
-                                   To=response_number,
-                                   Body=response)
+                                       To=response_number,
+                                       Body=response)
             outgoing_message.put()
 
             '''Send message'''

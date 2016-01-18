@@ -1,6 +1,7 @@
 from google.appengine.ext import ndb
 from player import Player
 from datetime import datetime
+from error import ActionError
 
 
 class Action(ndb.Model):
@@ -40,7 +41,10 @@ class ActionBuilder(object):
         self._get_attacker()
 
         if action == "KILL":
-            return self._kill(), self.action()
+            return self._kill(params), self.action()
+        elif action[1:] == "REPLY":
+            ref = params.pop(0)
+            return self._reply(ref, params)
         else:
             raise ActionError("CMD", action)
 
@@ -61,7 +65,9 @@ class ActionBuilder(object):
             self.victim = victim
         raise ActionError("NAME", victim_name)
 
-    def _kill(self):
+    def _kill(self, params):
+        vitim = params[0]
+        self._get_victim(victim)
         if self._validate_kill():
             ''' Invalid kill '''
             return
@@ -86,3 +92,15 @@ class ActionBuilder(object):
             raise ActionError("THEM", self.victim.state)
 
         return False
+
+    def _reply(self, ref, params):
+        lookup = Action.get_by_id(ref)
+        if not lookup:
+            raise ActionError("REPLY", "reference number")
+        # TODO: add more validation here (on KILL, victims match)
+        response = params[0]
+        if response == "Y" or response == "y":
+            lookup.need_validation = False
+            return lookup.put(), lookup
+        else:
+            raise ActionError("REPLY", "Y/N")

@@ -1,5 +1,4 @@
 from google.appengine.ext import ndb
-from twilio.rest import TwilioRestClient
 from model.player import Player
 
 
@@ -41,4 +40,3 @@ class ResponseBuilder(object):
             victim = Player.get_by_id(self.action.victim)
             response = "{} has been killed".format(victim.id())
         return response_number, response
-
